@@ -1,7 +1,7 @@
-const sales = require('../data/users');
+const users = require('../data/users');
 
 async function getUsers(){    
-    return sales.getAllUsers();
+    return users.getAllUsers();
 }
 
 module.exports = {getUsers}
