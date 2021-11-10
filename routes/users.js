@@ -1,22 +1,52 @@
 const express = require('express');
 const router = express.Router();
-const data = require("../data/users");
-
-/* GET users listing. */
-// router.get('/', function(req, res, next) {
-//   res.send('respond with a resource');
-// });
-
+const auth = require('../controllers/auth');
 const controller = require('../controllers/users');
 
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
     console.log("Trayendo usuarios");
     res.json(await controller.getUsers());
 });
 
+router.get('/:id', async (req, res) => {
+  console.log("Trayendo usuario por Id");
+  res.json(await controller.getUserById(req.params.id));
+});
+
+router.get('/:email', async (req, res) => {
+  console.log("Trayendo usuario por Email");
+  res.json(await controller.getUserByEmail(req.params.email));
+});
+
 router.post('/', async (req, res)=>{
     console.log("Creando un usuario");
-    res.send(await data.addUser(req.body));
+    try {
+      res.send(await controller.addUser(req.body));
+    } catch (error) {
+      res.send(error.message);
+    }
 });
+
+router.delete('/:id', async (req, res)=>{
+  console.log("Eliminando un usuario");
+  try {
+    await controller.deleteUser(req.params.id);
+    res.send("Usuario eliminado correctamente");
+  } catch (error) {
+    res.send(error.message);
+  }
+  
+});
+
+router.post('/login', async (req, res)=>{
+    try {
+      const user = await controller.findUserByCredential(req.body.email, req.body.password);
+      const token = await controller.generateToken(user);
+  
+      res.send({user, token});    
+    } catch (error) {
+      res.status(401).send(error.message);
+    }
+  });
 
 module.exports = router;
