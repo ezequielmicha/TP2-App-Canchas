@@ -36,4 +36,28 @@ async function generateToken(user){
     return users.generateToken(user);
 }
 
-module.exports = {getUsers, addUser, findUserByCredential, generateToken, getUserByEmail, deleteUser, getUserById}
+async function updateUser(user){
+    const myUser = await users.getUserByEmail(user.email);
+    if(!myUser){
+        throw new Error('Usuario no encontrado');
+    } 
+    return users.updateUser(user);
+}
+
+async function addReserve(user){
+    const myUser = await users.getUserByEmail(user.email);
+    if(!myUser){
+        throw new Error('Usuario no encontrado');
+    } 
+    return users.addReserve(user);
+}
+
+async function getReservesByUser(id){
+    const myUser = await users.getUserById(id);
+    if(!myUser){
+        throw new Error('Usuario no encontrado');
+    } 
+    return users.getReservesByUser(id);
+}
+
+module.exports = {getUsers, addUser, findUserByCredential, generateToken, getUserByEmail, deleteUser, getUserById, updateUser, addReserve, getReservesByUser}

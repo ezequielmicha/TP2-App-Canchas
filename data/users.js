@@ -77,4 +77,45 @@ async function generateToken(user){
     return token;
 }
 
-module.exports = {getAllUsers, addUser, findUserByCredential, generateToken, getUserByEmail, deleteUser, getUserById}
+async function updateUser(user){
+    const connectiondb = await conn.getConnection();
+    const query = {_id: new ObjectId(user._id)};
+    const newValues = { $set: {
+        userName : user.userName,
+        
+    }}   
+    const res = await connectiondb
+                .db(DATABASE)
+                .collection(USERS)
+                .updateOne(query,newValues);
+    return res;
+    
+}
+
+async function addReserve(user){
+    const connectiondb = await conn.getConnection();
+    const query = {_id: new ObjectId(user._id)};
+    const newValues = { $push: {
+        reserves:  user.reserve,
+    
+    }}   
+    const res = await connectiondb
+                .db(DATABASE)
+                .collection(USERS)
+                .update(query, newValues);
+    return res;
+    
+}
+
+async function getReservesByUser(id){
+    const connectiondb = await conn.getConnection();
+    const user = await connectiondb
+                        .db(DATABASE)
+                        .collection(USERS)
+                        .findOne({_id: new ObjectId(id)});
+    return user.reserves;
+}
+
+//getAllReserves / deleteReserve
+
+module.exports = {getAllUsers, addUser, findUserByCredential, generateToken, getUserByEmail, deleteUser, getUserById, updateUser, addReserve, getReservesByUser}
