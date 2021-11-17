@@ -82,7 +82,6 @@ async function updateUser(user){
     const query = {_id: new ObjectId(user._id)};
     const newValues = { $set: {
         userName : user.userName,
-        
     }}   
     const res = await connectiondb
                 .db(DATABASE)
@@ -92,30 +91,51 @@ async function updateUser(user){
     
 }
 
-async function addReserve(user){
-    const connectiondb = await conn.getConnection();
-    const query = {_id: new ObjectId(user._id)};
-    const newValues = { $push: {
-        reserves:  user.reserve,
+// async function addReserve(user){
+//     const connectiondb = await conn.getConnection();
+//     const query = {_id: new ObjectId(user._id)};
+//     const newValues = { $push: {
+//         reserves:  user.reserve,
     
-    }}   
-    const res = await connectiondb
-                .db(DATABASE)
-                .collection(USERS)
-                .update(query, newValues);
-    return res;
+//     }}   
+//     const res = await connectiondb
+//                 .db(DATABASE)
+//                 .collection(USERS)
+//                 .update(query, newValues);
+//     return res;
     
-}
+// }
 
-async function getReservesByUser(id){
-    const connectiondb = await conn.getConnection();
-    const user = await connectiondb
-                        .db(DATABASE)
-                        .collection(USERS)
-                        .findOne({_id: new ObjectId(id)});
-    return user.reserves;
-}
+// async function getReservesByUser(id){
+//     const connectiondb = await conn.getConnection();
+//     const user = await connectiondb
+//                         .db(DATABASE)
+//                         .collection(USERS)
+//                         .findOne({_id: new ObjectId(id)});
+//     return user.reserves;
+// }
 
-//getAllReserves / deleteReserve
+// async function getAllReserves(){
+//     const users = await getAllUsers();
+//     const reserves = [];
+//     users.forEach(user => {
+//         user.reserves.forEach(reserve => {
+//             reserves.push(reserve);
+//         });
+//     });
+//     return reserves;
+// }
 
-module.exports = {getAllUsers, addUser, findUserByCredential, generateToken, getUserByEmail, deleteUser, getUserById, updateUser, addReserve, getReservesByUser}
+// async function deleteReserve(user){
+//     const connectiondb = await conn.getConnection();
+//     const query = {_id: new ObjectId(user._id)};
+//     const newValues = {$pullAll: {
+//         reserves: [user.reserve] } }
+//     const res = await connectiondb
+//                 .db(DATABASE)
+//                 .collection(USERS)
+//                 .update(query, newValues);
+//     return res;
+// }
+
+module.exports = {getAllUsers, addUser, findUserByCredential, generateToken, getUserByEmail, deleteUser, getUserById, updateUser}
