@@ -1,57 +1,55 @@
 const conn = require('./connection');
-//const bcrypt = require("bcryptjs");
-//const jwt = require('jsonwebtoken');
 const { ObjectId } = require('bson');
 require('dotenv').config();
 const DATABASE = 'tp2-appcanchas';
-const RESERVES = 'reserves';
+const USERS = 'users';
+const allUsers = require('../data/users');
 
-
-async function getAllReserves(){
+async function addReserve(user){
     const connectiondb = await conn.getConnection();
-    const reserves = await connectiondb
-                        .db(DATABASE)
-                        .collection(RESERVES)
-                        .find()
-                        .toArray();    
-    return reserves;
-}
-
-async function getReserveById(id){
-    const connectiondb = await conn.getConnection();
-    const reserves = await connectiondb
-                        .db(DATABASE)
-                        .collection(RESERVES)
-                        .findOne({_id: new ObjectId(id)});
-    return reserves;
+    const query = {_id: new ObjectId(user._id)};
+    const newValues = { $push: {
+        reserves:  user.reserve,
+    
+    }}   
+    const res = await connectiondb
+                .db(DATABASE)
+                .collection(USERS)
+                .update(query, newValues);
+    return res;
+    
 }
 
 async function getReservesByUser(id){
     const connectiondb = await conn.getConnection();
-    const reserves = await connectiondb
+    const user = await connectiondb
                         .db(DATABASE)
-                        .collection(RESERVES)
-                        .findOne({'user._id': id});
+                        .collection(USERS)
+                        .findOne({_id: new ObjectId(id)});
+    return user.reserves;
+}
+
+async function getAllReserves(){
+    const users = await allUsers.getAllUsers();
+    const reserves = [];
+    users.forEach(user => {
+        user.reserves.forEach(reserve => {
+            reserves.push(reserve);
+        });
+    });
     return reserves;
 }
 
-async function addReserve(reserves){
+async function deleteReserve(user){
     const connectiondb = await conn.getConnection();
-    //reserves.password = await bcrypt.hash(reserves.password, 8);
+    const query = {_id: new ObjectId(user._id)};
+    const newValues = {$pullAll: {
+        reserves: [user.reserve] } }
     const res = await connectiondb
                 .db(DATABASE)
-                .collection(RESERVES)
-                .insertOne(reserves);
+                .collection(USERS)
+                .update(query, newValues);
     return res;
 }
 
-async function deleteReserve(id){
-    const connectiondb = await conn.getConnection();
-    const res = await connectiondb
-                .db(DATABASE)
-                .collection(RESERVES)
-                .deleteOne({_id: new ObjectId(id)});
-    return res;
-}
-
-module.exports = {getAllReserves, addReserve, deleteReserve, getReserveById, getReservesByUser}
+module.exports = {addReserve, getReservesByUser, getAllReserves, deleteReserve}
