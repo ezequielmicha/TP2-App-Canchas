@@ -1,10 +1,14 @@
 # TP2-App-Canchas
-A desarrollar...
-Introduccion, no mas de 5 lineas
-Instrucciones de instalación (npm install, obtener el archivo de varibles de entorno)
+Proyecto "Canchas de la lora"
+El proyecto de API-Rest solicitado por el cliente se utilizara para un sistema de reservas de canchas de futbol del predio "Canchas de la lora" el cual cuenta con una cancha de futbol 5, una de futbol 7, una de futbol 9 y una de futbol 11.
 
+# Instrucciones de instalación 
+1. Clonar el siguiente repositorio: https://github.com/ezequielmicha/TP2-App-Canchas.git
+2. Ejecutar el comando npm install para instalar todas las dependecinas
+3. Generar el archivo .env y colocar dentro lo enviado por privado 
+4. Para iniciar el servidor ejecutar el comando npm run start-dev
 
-Lista de routes (endpoints)
+# Lista de routes (endpoints)
 
 /api/users
 
