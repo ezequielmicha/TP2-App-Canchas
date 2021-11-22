@@ -26,14 +26,14 @@ router.put('/addReserve', auth, async (req, res) =>{
   }
 })
 
-// router.post('/email/addReserve', async (req, res) =>{
-//   console.log("Agregando reserva");
-//   try {
-//     res.send(await controller.addReserveByEmail(req.body));
-//   } catch (error) {
-//     res.send(error.message);
-//   }
-// })
+router.post('/email/addReserve', async (req, res) =>{
+  console.log("Agregando reserva");
+  try {
+    res.send(await controller.addReserveByEmail(req.body));
+  } catch (error) {
+    res.send(error.message);
+  }
+})
 
 router.put('/deleteReserve', auth, async (req, res) =>{
   console.log("Eliminando reserva");

@@ -20,21 +20,21 @@ async function addReserve(user){
     
 }
 
-// async function addReserveByEmail(user){
-//     const connectiondb = await conn.getConnection();
-//     const myUser = await allUsers.getUserByEmail(user.email)
-//     const query = {_id: new ObjectId(myUser._id)};
-//     const newValues = { $push: {
-//         reserves:  user.reserve,
+async function addReserveByEmail(user){
+    const connectiondb = await conn.getConnection();
+    const myUser = await allUsers.getUserByEmail(user.email)
+    const query = {_id: new ObjectId(myUser._id)};
+    const newValues = { $push: {
+        reserves:  user.reserve,
     
-//     }}   
-//     const res = await connectiondb
-//                 .db(DATABASE)
-//                 .collection(USERS)
-//                 .update(query, newValues);
-//     return res;
+    }}   
+    const res = await connectiondb
+                .db(DATABASE)
+                .collection(USERS)
+                .update(query, newValues);
+    return res;
     
-// }
+}
 
 async function getReservesByUser(id){
     const connectiondb = await conn.getConnection();
