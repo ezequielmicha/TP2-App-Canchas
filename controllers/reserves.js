@@ -13,16 +13,6 @@ async function getReservesByUser(id){
     return reserves.getReservesByUser(id);
 }
 
-async function getReservesByEmail(email){
-    const myUser = await users.getUserByEmail(email);
-    if(!myUser){
-        throw new Error('Usuario no encontrado');
-    } 
-    return reserves.getReservesByEmail(email);
-}
-
-
-
 async function addReserve(user){
     const myUser = await users.getUserById(user._id);
     const myReserves = await reserves.getAllReserves();
@@ -87,4 +77,25 @@ async function deleteReserve(user){
     return reserves.deleteReserve(user);
 }
 
-module.exports = {addReserve, getReservesByUser, getAllReserves, deleteReserve}
+async function markAsCalificated(user){
+    const myUser = await users.getUserById(user._id);
+    const userReserves = await reserves.getReservesByUser(user._id);
+    const findUserReserve = await userReserves.find(reserve => reserve.date === user.reserve.date && reserve.hour === user.reserve.hour && reserve.courtSize === user.reserve.courtSize);
+
+    if(!myUser){
+        throw new Error('Usuario no encontrado');
+    } 
+
+    if(!findUserReserve){
+        throw new Error('Reserva no encontrada');
+    }
+
+    if(findUserReserve.calificated){
+        throw new Error('Esta reserva ya fu calificada');
+    }
+
+    return reserves.markAsCalificated(user);
+}
+
+
+module.exports = {addReserve, getReservesByUser, getAllReserves, deleteReserve, markAsCalificated}

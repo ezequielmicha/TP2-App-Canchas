@@ -44,4 +44,13 @@ router.put('/deleteReserve', auth, async (req, res) =>{
   }
 })
 
+router.put('/markAsCalificated', auth, async (req, res) =>{
+  console.log("Marcando la reserva como calificada");
+  try {
+    res.send(await controller.markAsCalificated(req.body));
+  } catch (error) {
+    res.send(error.message);
+  }
+})
+
 module.exports = router;
