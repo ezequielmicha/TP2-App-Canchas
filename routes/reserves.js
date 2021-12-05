@@ -26,10 +26,28 @@ router.put('/addReserve', async (req, res) =>{
   }
 })
 
+// router.post('/email/addReserve', async (req, res) =>{
+//   console.log("Agregando reserva");
+//   try {
+//     res.send(await controller.addReserveByEmail(req.body));
+//   } catch (error) {
+//     res.send(error.message);
+//   }
+// })
+
 router.put('/deleteReserve', async (req, res) =>{
   console.log("Eliminando reserva");
   try {
     res.send(await controller.deleteReserve(req.body));
+  } catch (error) {
+    res.send(error.message);
+  }
+})
+
+router.put('/markAsCalificated', async (req, res) =>{
+  console.log("Marcando la reserva como calificada");
+  try {
+    res.send(await controller.markAsCalificated(req.body));
   } catch (error) {
     res.send(error.message);
   }

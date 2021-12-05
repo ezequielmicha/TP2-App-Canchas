@@ -20,6 +20,22 @@ async function addReserve(user){
     
 }
 
+// async function addReserveByEmail(user){
+//     const connectiondb = await conn.getConnection();
+//     const myUser = await allUsers.getUserByEmail(user.email)
+//     const query = {_id: new ObjectId(myUser._id)};
+//     const newValues = { $push: {
+//         reserves:  user.reserve,
+    
+//     }}   
+//     const res = await connectiondb
+//                 .db(DATABASE)
+//                 .collection(USERS)
+//                 .update(query, newValues);
+//     return res;
+    
+// }
+
 async function getReservesByUser(id){
     const connectiondb = await conn.getConnection();
     const user = await connectiondb
@@ -52,4 +68,24 @@ async function deleteReserve(user){
     return res;
 }
 
-module.exports = {addReserve, getReservesByUser, getAllReserves, deleteReserve}
+async function markAsCalificated(user){
+    const connectiondb = await conn.getConnection();
+    const query = {_id: new ObjectId(user._id), reserves : user.reserve};
+    const updatedReserve = {
+        date: user.reserve.date,
+        hour: user.reserve.hour,
+        courtSize: user.reserve.courtSize,
+        calificated: true
+    	}
+    const newValues = { $set: {
+         "reserves.$" : updatedReserve,
+    }} 
+    const res = await connectiondb
+                .db(DATABASE)
+                .collection(USERS)
+                .updateOne(query, newValues);
+    return res;
+}
+
+
+module.exports = {addReserve, getReservesByUser, getAllReserves, deleteReserve, markAsCalificated}

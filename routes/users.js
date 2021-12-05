@@ -3,21 +3,21 @@ const router = express.Router();
 const auth = require('../controllers/auth');
 const controller = require('../controllers/users');
 
-router.get('/', auth, async (req, res) => {
+router.get('/', async (req, res) => {
     console.log("Trayendo usuarios");
     res.json(await controller.getUsers());
 });
 
-router.get('/:id', auth, async (req, res) => {
+router.get('/:id', async (req, res) => {
   res.json(await controller.getUserById(req.params.id));
 });
 
-router.get('/email/:email', auth, async (req, res) => {
+router.get('/email/:email', async (req, res) => {
   console.log("Trayendo usuario por Email");
   res.json(await controller.getUserByEmail(req.params.email));
 });
 
-router.post('/', auth, async (req, res)=>{
+router.post('/', async (req, res)=>{
     console.log("Creando un usuario");
     try {
       res.send(await controller.addUser(req.body));
@@ -26,7 +26,7 @@ router.post('/', auth, async (req, res)=>{
     }
 });
 
-router.delete('/:id', auth, async (req, res)=>{
+router.delete('/:id', async (req, res)=>{
   console.log("Eliminando un usuario");
   try {
     await controller.deleteUser(req.params.id);
@@ -37,7 +37,7 @@ router.delete('/:id', auth, async (req, res)=>{
   
 });
 
-router.put('/', auth, async (req, res) =>{
+router.put('/', async (req, res) =>{
   console.log("Actualizando usuario");
   try {
     res.send(await controller.updateUser(req.body));
